@@ -2,9 +2,18 @@
 
 A user interface mockup of an admin console for an email system that can retreive emails from a database using a selected date range input. Built using React.
 
-## Available Scripts
+## Original design plan
 
-In the project directory, you can run:
+The goal of this project was to recreate and code the original design images given by designers along with some criteria. 
+1) The emails can be retrieved by a given search date range input.
+2) The emails can be sorted by date.
+3) Multiple bodies of the emails can be viewed at the same time.
+
+Images from designers
+
+[![Screen-Shot-2021-02-02-at-12-33-42.png](https://i.postimg.cc/htmDYhMV/Screen-Shot-2021-02-02-at-12-33-42.png)](https://postimg.cc/gxYbXzC0)
+[![Screen-Shot-2021-02-02-at-12-35-31.png](https://i.postimg.cc/Px5kdqb3/Screen-Shot-2021-02-02-at-12-35-31.png)](https://postimg.cc/Y4ZP3MsY)
+[![Screen-Shot-2021-02-02-at-12-36-28.png](https://i.postimg.cc/CxR7ppfG/Screen-Shot-2021-02-02-at-12-36-28.png)](https://postimg.cc/rDLx5bjs)
 
 ### `npm start`
 
