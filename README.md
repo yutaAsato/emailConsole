@@ -18,7 +18,7 @@ Images from designers
 ### Approach
 
 Different components were identified during the planning stage and in React they were seperated into various components, Results, CalenderBar, ResultHeader, ListItems, EmailRow.
-The react libray 'react-dates' was used for the 'CalenderBar' component to be able to search emails for a given date range search input. The 'ResultHeader' component was used to display the number of emails retrieved from the search. The 'ListItems' component maps the data that was retrieved from the search and passes it down to the 'EmailRow'.
+The react libray 'react-dates' was used for the 'CalenderBar' component to be able to search emails for a given date range search input. The 'ResultHeader' component was used to display the number of emails retrieved from the search. The 'ListItems' component maps the data that was retrieved from the search and passes it down to the 'EmailRow' component.
 
 ```js
 function Results() {
