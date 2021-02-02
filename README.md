@@ -15,13 +15,56 @@ Images from designers
 [![Screen-Shot-2021-02-02-at-12-35-31.png](https://i.postimg.cc/Px5kdqb3/Screen-Shot-2021-02-02-at-12-35-31.png)](https://postimg.cc/Y4ZP3MsY)
 [![Screen-Shot-2021-02-02-at-12-36-28.png](https://i.postimg.cc/CxR7ppfG/Screen-Shot-2021-02-02-at-12-36-28.png)](https://postimg.cc/rDLx5bjs)
 
-### `npm start`
+### Approach
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Different components were identified during the planning stage and in React they were seperated into 3 main components, CalenderBar, ResultHeader, ListItems.
+The react libray 'react-dates' was used for the CalenderBar component to be able to search emails for a given date range search input. The ResultHeader component 
+was used to simply display the number of emails retrieved from the search. The ListItems component displays a list of all the emails that were retrieved from the search.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```js
+function Results() {
+  const [dateRange, setdateRange] = React.useState({
+    startDate: null,
+    endDate: null,
+  });
+  const { startDate, endDate } = dateRange;
+  const [focus, setFocus] = React.useState(null);
+  const [queryDates, setQueryDates] = React.useState(null);
+  const { sortDates } = useSortData();
+
+  //reorder the intial unordered useSearch results
+  let searchResults = sortDates(useSearch(queryDates));
+
+  const handleOnDateChange = ({ startDate, endDate }) =>
+    setdateRange({ startDate, endDate });
+
+  function handleSearch() {
+    setQueryDates(dateRange);
+  }
+
+
+  return (
+    <div>
+      <MainGrid css={{ paddingTop: "50px" }}>
+        <CalenderBar
+          startDate={startDate}
+          endDate={endDate}
+          handleOnDateChange={handleOnDateChange}
+          focus={focus}
+          setFocus={setFocus}
+          handleSearch={handleSearch}
+        />
+      </MainGrid>
+      <div css={{ paddingLeft: "50px" }}>
+        <ResultsHeader searchResults={searchResults} />
+      </div>
+      <MainGrid>
+        <ListItems searchResults={searchResults} />
+      </MainGrid>
+    </div>
+  );
+}
+```
 
 ### `npm test`
 
