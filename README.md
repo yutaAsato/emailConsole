@@ -2,6 +2,8 @@
 
 A user interface mockup of an admin console for an email system that can retreive emails from a database using a selected date range input. Built using React.
 
+![me](https://media.giphy.com/media/3w9BQl0i880RAcRnte/giphy.gif)
+
 ## Original design plan
 
 The goal of this project was to recreate and code the original design images given by designers along with some criteria. 
