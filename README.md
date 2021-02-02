@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Admin Console Email System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A user interface mockup of an admin console for an email system that can retreive emails from a database using a selected date range input. Built using React.
 
 ## Available Scripts
 
