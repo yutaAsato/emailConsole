@@ -69,10 +69,122 @@ function Results() {
 }
 ```
 
-### CalenderBar.js
+### CalenderBar Component
 
 The CalenderBar component uses date range picker from 'react-date' so the user can make a date range selection. A handleSearch function is passed down as props to the searchbutton component. When the onClick eventHandler is fired the selected dates are set in the parent state and those values are used as the argument for the 'useSearch' custom hook which then finds and returns the relevant emails. The 'MomentJS' library was used to help format and sort the dates.
 [![Screen-Shot-2021-02-02-at-13-06-33.png](https://i.postimg.cc/63tJcxWX/Screen-Shot-2021-02-02-at-13-06-33.png)](https://postimg.cc/PL3Rfcv3)
+
+#### CalenderBar.js
+```js
+function CalenderBar({
+  startDate,
+  endDate,
+  focus,
+  handleOnDateChange,
+  setFocus,
+  handleSearch,
+}) {
+  return (
+    <div
+      css={{
+        display: "flex",
+        border: "2px solid",
+        borderRadius: "15px",
+        width: "450px",
+        color: `${colors.gray}`,
+        backgroundColor: `${colors.gray}`,
+      }}
+    >
+      <div
+        css={{
+          display: "flex",
+          border: "1.1px solid",
+          color: `${colors.gray}`,
+          width: "350px",
+          borderRadius: "4px",
+          backgroundColor: "white",
+        }}
+      >
+        <StyledDatePickerWrapper>
+          <DateRangePicker
+            startDatePlaceholderText="Start"
+            startDate={startDate}
+            onDatesChange={handleOnDateChange}
+            endDatePlaceholderText="End"
+            endDate={endDate}
+            numberOfMonths={2}
+            showClearDates={true}
+            focusedInput={focus}
+            onFocusChange={(focus) => setFocus(focus)}
+            startDateId="startDate"
+            endDateId="endDate"
+            isOutsideRange={() => false}
+            customInputIcon={<CalenderIcon />}
+          />
+        </StyledDatePickerWrapper>
+      </div>
+      <SearchButton handleSearch={handleSearch} />
+    </div>
+  );
+}
+
+export { CalenderBar };
+
+//CalenderIcon
+function CalenderIcon() {
+  return (
+    <div css={{ width: "30px", margin: "auto auto" }}>
+      <CalenderSVG />
+    </div>
+  );
+}
+
+//SearchButton
+function SearchButton({ handleSearch }) {
+  return (
+    <div css={{ padding: "10px 30px" }}>
+      <div css={{ width: "30px", margin: "auto auto" }}>
+        <button css={{ border: "none" }} onClick={handleSearch}>
+          <div
+            css={{
+              width: "30px",
+              margin: "auto auto",
+              "&:hover": { cursor: "pointer" },
+            }}
+          >
+            <SearchIconSVG />
+          </div>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+//====================================================
+
+//wrapper for react-dates to override default styles
+const StyledDatePickerWrapper = styled.div`
+  & .DateRangePickerInput,
+  .DateRangePickerInput_withBorder {
+    border: 0px;
+  }
+  .DateInput_input {
+    text-align: center;
+    font-size: 1rem;
+    border-bottom: 0;
+    padding: 12px 0px 14px;
+  }
+  .DateInput {
+    width: 100px;
+  }
+  .DateRangePickerInput_arrow_svg {
+    padding: 10px 10px;
+  }
+  .DateRangePickerInput_clearDates {
+    margin: auto auto;
+  }
+`;
+```
 
 #### useSearch
 ```js
