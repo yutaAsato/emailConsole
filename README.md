@@ -20,7 +20,7 @@ The goal of this project was to recreate and code the original design images giv
 ### Approach
 
 Different components were identified during the planning stage and in React they were seperated into various components, Results, CalenderBar, ResultHeader, ListItems, EmailRow.
-The react libray 'react-dates' was used for the 'CalenderBar' component to be able to search emails for a given date range search input. The 'ResultHeader' component was used to display the number of emails retrieved from the search. The 'ListItems' component maps the data that was retrieved from the search and passes it down to the 'EmailRow' component.
+The react library 'react-dates' was used for the 'CalenderBar' component to be able to search emails for a given date range search input. The 'ResultHeader' component was used to display the number of emails retrieved from the search. The 'ListItems' component maps the data that was retrieved from the search and passes it down to the 'EmailRow' component.
 The emotion library was used for styles making use of Styled-Components as well as CSS-in-JS.
 
 #### Results.js
