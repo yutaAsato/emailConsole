@@ -102,7 +102,7 @@ function useSearch(query) {
 
 ### ResultHeader + ListItems + EmailRow Component
 
-The 'ListItems' component maps the data to the 'EmailRow' component which uses Accordian from the 'Reach-UI' library so the user can inspect multiple bodies of emails at the same time. The user can also sort the emails by date by clicking on the date arrow icon. A custom hook 'useSortData' was used to handle data sorting.
+The 'ListItems' component maps the data to the 'EmailRow' component which uses Accordian from the 'Reach-UI' library so the user can click and inspect multiple bodies of emails at the same time. The user can also sort the emails by date by clicking on the date arrow icon. A custom hook 'useSortData' was used to handle data sorting.
 [![Screen-Shot-2021-02-02-at-13-25-41.png](https://i.postimg.cc/m2scftm3/Screen-Shot-2021-02-02-at-13-25-41.png)](https://postimg.cc/nM3VqcbM)
 
 #### ListItems.js
