@@ -17,9 +17,8 @@ Images from designers
 
 ### Approach
 
-Different components were identified during the planning stage and in React they were seperated into 3 main components, CalenderBar, ResultHeader, ListItems.
-The react libray 'react-dates' was used for the CalenderBar component to be able to search emails for a given date range search input. The ResultHeader component 
-was used to simply display the number of emails retrieved from the search. The ListItems component displays a list of all the emails that were retrieved from the search.
+Different components were identified during the planning stage and in React they were seperated into various components, Results, CalenderBar, ResultHeader, ListItems, EmailRow.
+The react libray 'react-dates' was used for the 'CalenderBar' component to be able to search emails for a given date range search input. The 'ResultHeader' component was used to display the number of emails retrieved from the search. The 'ListItems' component maps the data that was retrieved from the search and passes it down to the 'EmailRow'.
 
 ```js
 function Results() {
@@ -66,12 +65,12 @@ function Results() {
 }
 ```
 
-### CalenderBar component
+### CalenderBar.js
 
 The CalenderBar component uses date range picker from 'react-date' so the user can make a date range selection. A handleSearch function is passed down as props to the searchbutton component. When the onClick eventHandler is fired the selected dates are set in the parent state and those values are used as the argument for the 'useSearch' custom hook which then finds and returns the relevant emails.
 [![Screen-Shot-2021-02-02-at-13-06-33.png](https://i.postimg.cc/63tJcxWX/Screen-Shot-2021-02-02-at-13-06-33.png)](https://postimg.cc/PL3Rfcv3)
 
-useSearch
+#### useSearch
 ```js
 function useSearch(query) {
   let results = [];
@@ -98,18 +97,217 @@ function useSearch(query) {
 }
 ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+### ResultHeader + ListItems + EmailRow Component
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The 'ListItems' component maps the data to the 'EmailRow' component which uses Accordian from the 'Reach-UI' library so the user can inspect multiple bodies of emails at the same time. The user can also sort the email by date by clicking on the date arrow icon. A custom hook 'useSortData' was used to handle data sorting.
+[![Screen-Shot-2021-02-02-at-13-25-41.png](https://i.postimg.cc/m2scftm3/Screen-Shot-2021-02-02-at-13-25-41.png)](https://postimg.cc/nM3VqcbM)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### ListItems.js
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```js
+function ListItems({ searchResults }) {
+  const [sortedData, setSortedData] = React.useState(null);
+  const [toggle, setToggle] = React.useState(true);
+
+  const { sortDates } = useSortData();
+
+  //clears stale state when searchResults is updated
+  React.useEffect(() => {
+    setSortedData(null);
+  }, [searchResults]);
+
+  //SVGarrow toggler
+  const invertSVG = toggle ? "rotate(180deg)" : "none";
+
+  //order by dates toggler function (onClick -'Dates')
+  function handleSortData(data) {
+    setSortedData(sortDates([...data], toggle));
+    setToggle(!toggle);
+  }
+
+  //If user has clicked on 'Dates' to reorder then map 'sortedData' instead
+  const emails = sortedData?.length ? sortedData : searchResults;
+
+  //checks for data in array
+  const isData = searchResults.length;
+
+  return (
+    <div css={{ display: "grid" }}>
+      {isData ? (
+        <>
+          <div>
+            {isData ? (
+              <EmailHeader
+                searchResults={searchResults}
+                handleSortData={handleSortData}
+                invertSVG={invertSVG}
+              />
+            ) : null}
+          </div>
+          <div>
+            {emails.map((email) => (
+              <EmailRow email={email} />
+            ))}
+          </div>{" "}
+        </>
+      ) : (
+        <div css={{ justifySelf: "center", padding: "50px" }}>
+          <img css={{ width: "200px" }} alt="logo" src={logo} />
+        </div>
+      )}
+    </div>
+  );
+}
+```
+#### EmailRow.js
+```js
+function EmailRow({ email }) {
+  const { isToday, isMonth } = useDateConverter();
+
+  //formatteddate
+  let formattedDate;
+  if (isToday(email?.Date)) {
+    formattedDate = moment(email?.Date).format("H:HH");
+  } else if (isMonth(email?.Date)) {
+    formattedDate = moment(email?.Date).format("MMM DD");
+  } else {
+    formattedDate = moment(email?.Date).format("YYYY/MM/DD");
+  }
+
+  //Foramatted 'To' - If email is sent to more than one person show '...' after first address and a number with recipient number.
+  let formattedTo;
+  let recipientCount;
+  const reciever = email?.To;
+  if (typeof reciever === "object") {
+    recipientCount = reciever.length - 1;
+    formattedTo = `${reciever[0]},  ...`;
+  } else {
+    recipientCount = null;
+    formattedTo = reciever;
+  }
+
+  //main markup
+  const accordianButtonMarkup = (
+    <div
+      css={{
+        display: "grid",
+        gridTemplateColumns: "repeat(4, 1fr)",
+        width: "1400px",
+        borderBottom: "2px black",
+        "&:hover": {
+          cursor: "pointer",
+          color: "blue",
+        },
+      }}
+    >
+      <EmailMain>{email?.From}</EmailMain>
+      <Wrapper>
+        <EmailMain css={{ maxWidth: 250 }}>{formattedTo}</EmailMain>
+        <ElementWrapper
+          css={{ display: "flex", justifyContent: "center", width: "60px" }}
+        >
+          {recipientCount ? (
+            <RecipientCountWrapper>{`+${recipientCount}`}</RecipientCountWrapper>
+          ) : null}
+        </ElementWrapper>
+      </Wrapper>
+
+      <Wrapper>
+        <EmailMain css={{ maxWidth: 250 }}>{email?.Subject}</EmailMain>
+        <ElementWrapper>
+          {email?.Attachment ? <ClipSVG /> : null}
+        </ElementWrapper>
+      </Wrapper>
+      <EmailMain>{formattedDate}</EmailMain>
+    </div>
+  );
+
+  //body markup
+  const accordianPanelMarkup = (
+    <div css={{ display: "inline-flex", width: "1400px" }}>
+      <div css={{ padding: "20px 20px" }}>{email?.Body}</div>
+    </div>
+  );
+
+  return (
+    <div>
+      <Accordion collapsible multiple>
+        <AccordionItem>
+          {email?.From ? (
+            <AccordionButton
+              css={{
+                padding: "0 0",
+                background: "white",
+                border: "none",
+                borderBottom: `2px solid ${colors.gray}`,
+              }}
+            >
+              <div>{accordianButtonMarkup}</div>
+            </AccordionButton>
+          ) : null}
+          <AccordionPanel css={{ width: "1400px" }}>
+            <div>{accordianPanelMarkup}</div>
+          </AccordionPanel>
+        </AccordionItem>
+      </Accordion>
+    </div>
+  );
+}
+
+export { EmailRow };
+
+//======================================================
+
+const EmailMain = styled.div({
+  padding: "20px 20px",
+  justifySelf: "baseline",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  maxWidth: 300,
+  whiteSpace: "nowrap",
+  fontSize: "1.1rem",
+});
+
+const Wrapper = styled.div({
+  display: "grid",
+  gridTemplateColumns: "300px 50px",
+});
+
+const ElementWrapper = styled.div({
+  width: "20px",
+  margin: "auto auto",
+});
+
+const RecipientCountWrapper = styled.div({
+  width: "30px",
+  border: `1px solid ${colors.gray10}`,
+  borderRadius: "5px",
+  backgroundColor: "gray",
+  color: "white",
+  fontWeight: "700",
+  fontSize: "1.1rem",
+});
+```
+
+#### useSortData
+```js
+/Custom hook for sorting email data
+function useSortData() {
+  //sortDates
+  const sortDates = React.useCallback((emails, toggle) => {
+    const data = emails ? [...emails] : null;
+    const sorted = data?.sort((a, b) =>
+      toggle ? a.Date - b.Date : b.Date - a.Date
+    );
+
+    return sorted;
+  }, []);
+
+  return { sortDates };
+}
+```
+
 
 ### `npm run eject`
 
