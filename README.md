@@ -19,7 +19,9 @@ Images from designers
 
 Different components were identified during the planning stage and in React they were seperated into various components, Results, CalenderBar, ResultHeader, ListItems, EmailRow.
 The react libray 'react-dates' was used for the 'CalenderBar' component to be able to search emails for a given date range search input. The 'ResultHeader' component was used to display the number of emails retrieved from the search. The 'ListItems' component maps the data that was retrieved from the search and passes it down to the 'EmailRow' component.
+The emotion library was used for styles making use of Styled-Components as well as CSS-in-JS.
 
+#### Results.js
 ```js
 function Results() {
   const [dateRange, setdateRange] = React.useState({
@@ -67,7 +69,7 @@ function Results() {
 
 ### CalenderBar.js
 
-The CalenderBar component uses date range picker from 'react-date' so the user can make a date range selection. A handleSearch function is passed down as props to the searchbutton component. When the onClick eventHandler is fired the selected dates are set in the parent state and those values are used as the argument for the 'useSearch' custom hook which then finds and returns the relevant emails.
+The CalenderBar component uses date range picker from 'react-date' so the user can make a date range selection. A handleSearch function is passed down as props to the searchbutton component. When the onClick eventHandler is fired the selected dates are set in the parent state and those values are used as the argument for the 'useSearch' custom hook which then finds and returns the relevant emails. The 'MomentJS' library was used to help format and sort the dates.
 [![Screen-Shot-2021-02-02-at-13-06-33.png](https://i.postimg.cc/63tJcxWX/Screen-Shot-2021-02-02-at-13-06-33.png)](https://postimg.cc/PL3Rfcv3)
 
 #### useSearch
@@ -100,7 +102,7 @@ function useSearch(query) {
 
 ### ResultHeader + ListItems + EmailRow Component
 
-The 'ListItems' component maps the data to the 'EmailRow' component which uses Accordian from the 'Reach-UI' library so the user can inspect multiple bodies of emails at the same time. The user can also sort the email by date by clicking on the date arrow icon. A custom hook 'useSortData' was used to handle data sorting.
+The 'ListItems' component maps the data to the 'EmailRow' component which uses Accordian from the 'Reach-UI' library so the user can inspect multiple bodies of emails at the same time. The user can also sort the emails by date by clicking on the date arrow icon. A custom hook 'useSortData' was used to handle data sorting.
 [![Screen-Shot-2021-02-02-at-13-25-41.png](https://i.postimg.cc/m2scftm3/Screen-Shot-2021-02-02-at-13-25-41.png)](https://postimg.cc/nM3VqcbM)
 
 #### ListItems.js
