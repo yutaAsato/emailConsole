@@ -68,8 +68,35 @@ function Results() {
 
 ### CalenderBar component
 
-The CalenderBar component uses date range picker from 'react-date' so the user can make a date range selection. A handleSearch function is passed down as props to the searchbutton component which 
+The CalenderBar component uses date range picker from 'react-date' so the user can make a date range selection. A handleSearch function is passed down as props to the searchbutton component. When the onClick eventHandler is fired the selected dates are set in the parent state and those values are used as the argument for the 'useSearch' custom hook which then finds and returns the relevant emails.
 [![Screen-Shot-2021-02-02-at-13-06-33.png](https://i.postimg.cc/63tJcxWX/Screen-Shot-2021-02-02-at-13-06-33.png)](https://postimg.cc/PL3Rfcv3)
+
+useSearch
+```js
+function useSearch(query) {
+  let results = [];
+
+  dummyData.map((email) => {
+    const emailDate = moment(moment(email.Date)._d).format("MM/DD/YYYY");
+
+    const queryStart = query?.startDate
+      ? moment(query.startDate._d).format("MM/DD/YYYY")
+      : null;
+    const queryEnd = query?.endDate
+      ? moment(query.endDate._d).format("MM/DD/YYYY")
+      : null;
+
+    if (
+      moment(emailDate).isSameOrAfter(queryStart) &&
+      moment(emailDate).isSameOrBefore(queryEnd)
+    ) {
+      results.push(email);
+    }
+  });
+
+  return results.join().replace(/,/g, "").length === 0 ? [] : results;
+}
+```
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
