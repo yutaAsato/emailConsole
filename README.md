@@ -11,7 +11,7 @@ The goal of this project was to recreate and code the original design images giv
 2) The emails can be sorted by date.
 3) Multiple bodies of the emails can be viewed at the same time.
 
-Images from designers
+#### Design Images
 
 [![Screen-Shot-2021-02-02-at-12-33-42.png](https://i.postimg.cc/htmDYhMV/Screen-Shot-2021-02-02-at-12-33-42.png)](https://postimg.cc/gxYbXzC0)
 [![Screen-Shot-2021-02-02-at-12-35-31.png](https://i.postimg.cc/Px5kdqb3/Screen-Shot-2021-02-02-at-12-35-31.png)](https://postimg.cc/Y4ZP3MsY)
